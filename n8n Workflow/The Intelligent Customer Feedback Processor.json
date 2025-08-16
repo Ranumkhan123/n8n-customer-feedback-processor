@@ -1,0 +1,102 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "The Intelligent Customer Feedback Processor",
+        "formDescription": "The Intelligent Customer Feedback Processor",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Name",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Email",
+              "fieldType": "email",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Feedback",
+              "fieldType": "textarea",
+              "requiredField": true
+            }
+          ]
+        }
+      },
+      "name": "Collect Feedback Form",
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "authentication": "basicAuth",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "method": "POST",
+        "sendBody": true,
+        "jsonBody": true,
+        "options": {},
+        "bodyParametersJson": "={\n  \"model\": \"gpt-4o-mini\",\n  \"messages\": [\n    {\"role\": \"system\", \"content\": \"You are an AI that analyzes customer feedback and provides a categorized summary (Positive, Neutral, Negative).\"},\n    {\"role\": \"user\", \"content\": \"{{$json[\"Feedback\"]}}\"}\n  ]\n}",
+        "headerParametersJson": "={\n  \"Content-Type\": \"application/json\",\n  \"Authorization\": \"Bearer {{YOUR_API_KEY}}\"\n}"
+      },
+      "name": "Analyze Feedback with OpenAI",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [650, 300],
+      "credentials": {
+        "httpBasicAuth": {
+          "user": "{{YOUR_USERNAME}}",
+          "password": "{{YOUR_PASSWORD}}"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "{{YOUR_EMAIL}}",
+        "toEmail": "support@company.com",
+        "subject": "New Customer Feedback Received",
+        "text": "Customer Name: {{$json[\"Name\"]}}\nCustomer Email: {{$json[\"Email\"]}}\nFeedback: {{$json[\"Feedback\"]}}\n\nAI Analysis: {{ $json[\"choices\"][0][\"message\"][\"content\"] }}",
+        "options": {
+          "allowUnauthorizedCerts": true
+        }
+      },
+      "name": "Send Feedback Email",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 1,
+      "position": [950, 300],
+      "credentials": {
+        "smtp": {
+          "user": "{{YOUR_EMAIL}}",
+          "password": "{{YOUR_PASSWORD}}",
+          "host": "smtp.gmail.com",
+          "port": 465,
+          "secure": true
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Collect Feedback Form": {
+      "main": [
+        [
+          {
+            "node": "Analyze Feedback with OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze Feedback with OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Send Feedback Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}
