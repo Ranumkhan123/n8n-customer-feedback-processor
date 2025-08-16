@@ -49,11 +49,14 @@ Feel free to fork this repository and enhance the workflow with:
 - Slack / WhatsApp alerts for negative feedback  
 
 ---
+##  Author
 
-## Author
-Ranum Khan
-LinkedIn | GitHub
+**Ranum Khan**  
+[LinkedIn](https://linkedin.com/in/ranum-khan-qaengineer) | [GitHub](https://github.com/Ranumkhan123)  
 Experienced **QA Engineer** with a strong foundation in manual and API testing, and rich documentation.
+
+---
+
 
 ## License
 This project uses public APIs and is intended for educational and portfolio purposes only.
