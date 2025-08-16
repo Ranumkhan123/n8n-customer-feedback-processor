@@ -29,6 +29,11 @@ This n8n workflow automatically collects customer feedback through a form, proce
 
 ---
 
+## Demo
+View the live demo → [Video overview](docs/demo.md)
+
+---
+
 ##  Setup
 1. Import the workflow JSON file into your **n8n instance**  
 2. Configure the **LLM node** with your preferred provider (OpenAI / Ollama / etc.)  
