@@ -30,7 +30,7 @@ This n8n workflow automatically collects customer feedback through a form, proce
 ---
 
 ## Demo
-View the live demo → [Video overview](./Docs/demo video.md)
+View the live demo → [Video overview](./Docs/demovideo.md)
 
 ---
 
